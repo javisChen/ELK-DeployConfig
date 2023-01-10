@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  es-01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
+    container_name: es-01
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    restart: always
+    environment:
+      - discovery.type=single-node
+    networks:
+      - elk-net
+  kib-01:
+    image: docker.elastic.co/kibana/kibana:7.17.7
+    container_name: kib-01
+    volumes:
+      - ./kibana/config:/usr/share/kibana/config
+    ports:
+      - "5601:5601"
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es-01:9200
+    networks:
+      - elk-net
+  logstash:
+    image: logstash:7.17.7
+    container_name: logstash
+    volumes:
+      - ./logstash/config:/usr/share/logstash/config
+      - ./logstash/data:/usr/share/logstash/data
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5000:5000"
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - elk-net
+    # command: "logstash -e 'input { stdin { } } output { stdout {} }'"
+# 指定使用的网络
+networks:
+  elk-net:
+    external: 
+      name: elastic
