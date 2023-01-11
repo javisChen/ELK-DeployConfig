@@ -49,7 +49,7 @@ services:
       - TZ=Asia/Shanghai
     networks:
       - elk-net
-    # command: "filebeat"
+    command: "./filebeat -e -c -d filebeat.yml"
 # 指定使用的网络
 networks:
   elk-net:
