@@ -45,7 +45,9 @@ services:
     container_name: filebeat
     volumes:
       - ./filebeat:/usr/share/filebeat
-      - "/Users/chenjiawei/dev/docker/ark:/usr/share/filebeat/services/logs"
+      # - "/Users/chenjiawei/dev/docker/ark:/usr/share/filebeat/services/logs"
+      - "C:\\docker\\ark:/usr/share/filebeat/services/logs"
+      # - "C:\\docker\\test:/usr/share/filebeat/test/logs"
     restart: always
     environment:
       - TZ=Asia/Shanghai
